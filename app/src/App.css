@@ -75,7 +75,8 @@
         @apply bg-neutral text-text-contrast;
     }
       /* Reset padding and margins for all elements */
-    body, h1, h2, h3, h4, h5, h6, p, ol, ul, li, figure, figcaption, blockquote, dl, dd {
+    body, h1, h2, h3, h4, h5, h6, p, ol, ul, li, figure, figcaption, blockquote, dl, dd, details, summary {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
     }
