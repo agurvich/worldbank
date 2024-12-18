@@ -21,10 +21,10 @@ export const AllChartDataProvider = ({ children }) => {
 
     },[]);
 
-    const minX = 0;
-    const maxX = 1;
+    const minX = 2015;
+    const maxX = 2024;
     const minY = 0;
-    const maxY = 1;
+    const maxY = 100;
 
     return (
         <AllChartDataContext.Provider value={null}>

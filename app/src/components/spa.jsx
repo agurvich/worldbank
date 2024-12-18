@@ -14,7 +14,7 @@ function SPA({className='', ...props}) {
                 <div className='h-screen w-1/2'>
                     <MapClick />
                 </div>
-                <div className='h-screen w-1/2'>
+                <div className='h-screen w-1/2 overflow-y-scroll'>
                     <SuspenseComponent />
                 </div>
                 {/*

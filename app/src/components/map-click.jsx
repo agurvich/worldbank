@@ -27,7 +27,6 @@ function MapClickContent({ className, ...params }) {
     const { setActiveCountry } = useActiveCountry();
 
     const countriesGeoJSON = countriesResource.read();
-    console.log(countriesGeoJSON)
 
     // Define style for GeoJSON features
     const geoJSONStyle = {

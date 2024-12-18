@@ -28,6 +28,7 @@ export function drawChart({
     //  map fractional position to pixels
     const xScale = d3.scaleLinear().domain([minX, maxX]).range([0, canvasWidth]);
     const yScale = d3.scaleLinear().domain([minY, maxY]).range([canvasHeight, 0]);
+    console.log('scales',xScale, yScale)
 
     // Create a group element to contain the chart elements, positioned by the margins
     let mainGroup = svg.select("g.main-group");

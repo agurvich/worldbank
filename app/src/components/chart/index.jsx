@@ -46,7 +46,7 @@ function Chart() {
                 dimensions,          
             });
         }
-    }, [ chartData, dimensions, ]);
+    }, [ chartData, dimensions ]);
 
     useLifecycleLogger("Chart", 0);
     return (

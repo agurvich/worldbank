@@ -2,6 +2,10 @@ import listenersResource from '@src/resources/listener-resource';
 import useLifecycleLogger from '@src/hooks/lifecycle-logger';
 import { withFallbackAndBoundary } from '@src/utils/suspense-error-hoc';
 import { useActiveCountry, useLocationData } from '@src/contexts/map-data-context';
+import Chart from './chart';
+import countryDataResource from '@src/resources/country-data-resource';
+import { useChartData } from '@src/contexts/chart-data-context';
+import { useEffect } from 'react';
 
 function SuspenseComponent({className='', ...props}) {
 
@@ -16,11 +20,38 @@ function SuspenseComponent({className='', ...props}) {
 
 
 function Content({ className, ...props }) {
-    const {servers, ...rest} = listenersResource.read(); // React Suspense handles loading
+    //const {servers, ...rest} = listenersResource.read(); // React Suspense handles loading
+    const [ multiDimPoverty, foodSecurity ] = countryDataResource.read(); 
     const { activeCountry } = useActiveCountry();
 
+    const {setChartData} = useChartData();
 
-    const detailsClassName="w-full group border border-gray-300 rounded-lg p-4 bg-white shadow-md";
+    console.log()
+    console.log()
+
+
+    const multiDimPovertyData = multiDimPoverty[activeCountry.name];
+    const foodSecurityData = foodSecurity.fs_data[activeCountry.name];
+    useEffect(()=>{
+        if (foodSecurityData){
+
+            const values = foodSecurityData.map((y, idx) => ({
+                x: foodSecurity.fs_years[idx],
+                y: y,
+                id: idx
+            }));
+
+            const chartData = {
+                values: values,
+                lineParams: {},
+                name: "default0"
+            };
+            setChartData([chartData]);
+        }
+    },[activeCountry]);
+
+
+    const detailsClassName="w-full p-4 group border border-gray-300 rounded-lg bg-white shadow-md";
     const summaryClassName="h-full w-full font-semibold text-gray-700 cursor-pointer list-none flex justify-between items-center";
 
     return (
@@ -30,6 +61,16 @@ function Content({ className, ...props }) {
                     {activeCountry?.name} 
                 </h1>
             </div>
+            {multiDimPovertyData && Object.entries(multiDimPovertyData).map(
+                ([key, value],idx) => {
+                    return(
+
+                    <div key={`${idx}-number`} className='flex flex-row'>
+                        <h2 className='font-semi-bold text-xl'>{key}</h2>: {value}%
+                    </div>
+                    );
+                }
+            )}
             <div className='flex flex-col flex-1'>
                 <details className={detailsClassName}>
                     <summary className={summaryClassName}>Poverty</summary>
@@ -47,18 +88,14 @@ function Content({ className, ...props }) {
                 </details>
                 <details className={detailsClassName}>
                     <summary className={summaryClassName}>Inequality</summary>
-                    <p>Inequality encompasses disparities in wealth, opportunities, and access to services across different groups in society. Addressing inequality promotes fairness and inclusivity.</p>
                 </details>
                 <details className={detailsClassName}>
                     <summary className={summaryClassName}>Prosperity</summary>
-                    <p>Prosperity represents economic growth, improved living standards, and sustainable well-being for all. It emphasizes shared benefits and equitable access to opportunities.</p>
                 </details>
-
                 <details className={detailsClassName}>
-                    <summary className={summaryClassName}>Development</summary>
-                    <p>Development is the process of improving the quality of life and economic opportunities in a sustainable way. It includes investments in infrastructure, education, and health systems.</p>
                 </details>
             </div>
+            <div className='h-96 w-96'> <Chart /> </div>
         </div>
     )
 }
