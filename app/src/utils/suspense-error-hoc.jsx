@@ -10,8 +10,6 @@ export function withFallbackAndBoundary({
     className='',
     ...props
 }) {
-    console.log('class',className,'props',props,'inside here!')
-    console.log(Component)
     return function WrappedComponent() {
         return (
             <ErrorBoundary fallback={ errorFallback } {...{resetErrorBoundary}} >
@@ -24,6 +22,5 @@ export function withFallbackAndBoundary({
 }
 
 const DefaultLoadingFallback = ({className='', ...props}) => {
-    console.log(props)
     return <Skeleton className={`m-4 ${className} h-32`}  {...props} />
 };
