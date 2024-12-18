@@ -54,25 +54,8 @@ function Content({ className, ...props }) {
     const detailsClassName="w-full p-4 group border border-gray-300 rounded-lg bg-white shadow-md";
     const summaryClassName="h-full w-full font-semibold text-gray-700 cursor-pointer list-none flex justify-between items-center";
 
-    return (
-        <div className={`p-4 flex flex-col w-full ${className}`} {...props}>
-            <div className='flex flex-row w-full justify-around'>
-                <h1 className='font-bold text-6xl mb-4'>
-                    {activeCountry?.name} 
-                </h1>
-            </div>
-            {multiDimPovertyData && Object.entries(multiDimPovertyData).map(
-                ([key, value],idx) => {
-                    return(
-
-                    <div key={`${idx}-number`} className='flex flex-row'>
-                        <h2 className='font-semi-bold text-xl'>{key}</h2>: {value}%
-                    </div>
-                    );
-                }
-            )}
-            <div className='flex flex-col flex-1'>
-                <details className={detailsClassName}>
+    /*
+<details className={detailsClassName}>
                     <summary className={summaryClassName}>Poverty</summary>
                     <ul>
                         <li>
@@ -94,8 +77,29 @@ function Content({ className, ...props }) {
                 </details>
                 <details className={detailsClassName}>
                 </details>
+                */
+
+    return (
+        <div className={`p-4 flex flex-col w-full ${className}`} {...props}>
+            <div className='flex flex-row w-full justify-around'>
+                <h1 className='font-bold text-6xl mb-4'>
+                    {activeCountry?.name} 
+                </h1>
             </div>
-            <div className='h-96 w-96'> <Chart /> </div>
+            {multiDimPovertyData && Object.entries(multiDimPovertyData).map(
+                ([key, value],idx) => {
+                    return(
+
+                    <div key={`${idx}-number`} className='flex flex-row'>
+                        <h2 className='font-semi-bold text-xl'>{key}</h2>: {value}%
+                    </div>
+                    );
+                }
+            )}
+            <div className='flex flex-col flex-1'>
+                
+            </div>
+            <div className='h-48 w-96'> <Chart /> </div>
         </div>
     )
 }

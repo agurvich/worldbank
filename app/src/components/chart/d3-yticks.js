@@ -26,6 +26,6 @@ export function getYTickLabels() {
     const percentages = [0, 25, 50, 75, 100];
     return percentages.map(pct => ({
         label: `${pct}%`,
-        value: pct / 100 // Convert percentage to scale range (0 to 1)
+        value: pct  // Convert percentage to scale range (0 to 1)
     }));
 }

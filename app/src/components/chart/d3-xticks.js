@@ -24,11 +24,11 @@ function getXtickLabels(){
     var months;
 
     // Define month abbreviations
-    const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    const monthNames = [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
 
     months = monthNames.map((monthName, idx) => ({
         label: monthName,
-        value: (idx / 11).toFixed(4)
+        value: monthName
     }));
 
     return months;
