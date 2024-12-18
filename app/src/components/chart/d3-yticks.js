@@ -23,7 +23,7 @@ export function addYAxis(svg, yScale, margin) {
 
 // Generate Y-axis labels (example function)
 export function getYTickLabels() {
-    const percentages = [0, 25, 50, 75, 100];
+    const percentages = [0, 12.5, 25, 37.5, 50, 75, 100];
     return percentages.map(pct => ({
         label: `${pct}%`,
         value: pct  // Convert percentage to scale range (0 to 1)

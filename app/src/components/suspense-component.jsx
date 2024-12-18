@@ -79,27 +79,32 @@ function Content({ className, ...props }) {
                 </details>
                 */
 
+    if (!activeCountry?.name) return null
     return (
-        <div className={`p-4 flex flex-col w-full ${className}`} {...props}>
+        <div className={`p-4 flex flex-col w-full gap-8 ${className}`} {...props}>
             <div className='flex flex-row w-full justify-around'>
                 <h1 className='font-bold text-6xl mb-4'>
                     {activeCountry?.name} 
                 </h1>
             </div>
-            {multiDimPovertyData && Object.entries(multiDimPovertyData).map(
-                ([key, value],idx) => {
-                    return(
-
-                    <div key={`${idx}-number`} className='flex flex-row'>
-                        <h2 className='font-semi-bold text-xl'>{key}</h2>: {value}%
-                    </div>
-                    );
-                }
-            )}
+            <div className='flex flex-col gap-4'>
+                {multiDimPovertyData && Object.entries(multiDimPovertyData).map(
+                    ([key, value],idx) => {
+                        return(
+                        <div key={`${idx}-number`} className='flex flex-row items-center gap-4'>
+                            <h2 className='font-semi-bold text-xl'>{key.replace('(%)','')}:</h2> <div>{value}%</div>
+                        </div>
+                        );
+                    }
+                )}
+            </div>
             <div className='flex flex-col flex-1'>
                 
             </div>
-            <div className='h-48 w-96'> <Chart /> </div>
+            <div className='flex flex-col items-center'>
+                <h2 className='font-semi-bold text-2xl'>Food Insecurity</h2>
+                <div className='h-48 w-96'> <Chart /> </div>
+            </div>
         </div>
     )
 }

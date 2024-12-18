@@ -24,7 +24,7 @@ export const AllChartDataProvider = ({ children }) => {
     const minX = 2015;
     const maxX = 2024;
     const minY = 0;
-    const maxY = 100;
+    const maxY = 50;
 
     return (
         <AllChartDataContext.Provider value={null}>

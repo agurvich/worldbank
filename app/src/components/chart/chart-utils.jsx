@@ -19,7 +19,7 @@ export function drawChart({
     //svg.selectAll("*").remove();
 
     // Set up margins and calculate the width and height of the drawing area
-    const margin = { top: 15, right: 15, bottom: 25, left: 35 };
+    const margin = { top: 15, right: 15, bottom: 25, left: 45 };
     // hardcode dimensions and use viewBox to scale
     const canvasWidth = dimensions.width - margin.left - margin.right;
     const canvasHeight = dimensions.height - margin.top - margin.bottom;
@@ -28,7 +28,6 @@ export function drawChart({
     //  map fractional position to pixels
     const xScale = d3.scaleLinear().domain([minX, maxX]).range([0, canvasWidth]);
     const yScale = d3.scaleLinear().domain([minY, maxY]).range([canvasHeight, 0]);
-    console.log('scales',xScale, yScale)
 
     // Create a group element to contain the chart elements, positioned by the margins
     let mainGroup = svg.select("g.main-group");
