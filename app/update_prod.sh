@@ -4,4 +4,8 @@ rm -rf dist
 
 npm run build:prod
 
-rsync -avh --delete dist/ copan:/svs/db/prepub/abg/svs-reporter
+rsync -avh --delete dist/ ../docs
+cp ../wb-dd-presentation.pdf ../docs
+
+git add ../docs
+git commit
