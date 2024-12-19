@@ -4,7 +4,11 @@
 * LINCOLN CHANAKIRA
 * ALEX GURVICH
 * JEREMY SKOG
-* KYLE SPENCER
+* KYLE SPENCER (not pictured)
+
+![From left to right: Jeremy, Alex, Lincoln](media/photo.jpeg)
+From left to right: Jeremy, Alex, Lincoln
+
 
 ## Challenge Statement
 
