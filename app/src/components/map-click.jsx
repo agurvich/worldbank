@@ -24,17 +24,21 @@ function MapClick({className='', ...props}) {
 
 function MapClickContent({ className, ...params }) {
     const { locationData, setLocationData } = useLocationData();
-    const { setActiveCountry } = useActiveCountry();
+    const { activeCountry, setActiveCountry } = useActiveCountry();
 
     const countriesGeoJSON = countriesResource.read();
+    const activeCountryRef = useRef();
+
 
     // Define style for GeoJSON features
-    const geoJSONStyle = {
-        color: 'blue',
+    const geoJSONStyle = (feature) => ({
+        color: feature.properties.shapeGroup === activeCountry?.name ? 'green' : 'blue',
         weight: 1,
         fillColor: 'lightblue',
         fillOpacity: 0.5,
-    };
+    });
+
+    activeCountryRef.__current__ = activeCountry.name;
 
     // Function to bind popups or events to each GeoJSON feature
     const onEachFeature = (feature, layer) => {
@@ -60,6 +64,8 @@ function MapClickContent({ className, ...params }) {
                 },
                 mouseover: (e) => {
                     const layer = e.target;
+                    // Bring the clicked feature to the front
+                    layer.bringToFront();
                     layer.setStyle({
                         color: 'red',
                         weight: 2,
@@ -68,8 +74,8 @@ function MapClickContent({ className, ...params }) {
                 mouseout: (e) => {
                     const layer = e.target;
                     layer.setStyle({
-                        color: 'blue',
-                        weight: 1,
+                        color: feature.properties.shapeGroup === activeCountryRef.__current__ ? 'green' : 'blue',
+                        weight: feature.properties.shapeGroup === activeCountryRef.__current__ ? 2 : 1,
                     });
                 },
             });
