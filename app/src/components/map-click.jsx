@@ -49,7 +49,14 @@ function MapClickContent({ className, ...params }) {
                     // Propagate the click event to the map
                     const map = e.target._map;
                     const latlng = e.latlng;
-                    map.fireEvent('click', { latlng });
+                    const bounds = layer.getBounds();
+                    // Fit the map view to the bounds of the polygon
+                    map.flyToBounds(bounds, {
+                        padding: [20, 20], // Add padding around the polygon
+                        maxZoom: 8,      // Limit the maximum zoom level
+                        duration: 1.5     // Duration in seconds for the animation
+                    });
+
                 },
                 mouseover: (e) => {
                     const layer = e.target;
