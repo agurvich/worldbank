@@ -14,13 +14,19 @@ export const LocationDataContext = createContext({
 
 export const ActiveCountryContext = createContext({
     activeCountry: null,
-    setActiveCountry: () => {},
-    indicatorResource: null
+    setActiveCountry: () => {}
+});
+
+export const ActiveCountryDataContext = createContext({
+    indicatorResource : null,
+    gsapGeometryResource : null ,
+    fooResource : null
 });
 
 export const useMapData = () => useContext(MapDataContext);
 export const useLocationData = () => useContext(LocationDataContext);
 export const useActiveCountry = () => useContext(ActiveCountryContext);
+export const useActiveCountryData = () => useContext(ActiveCountryDataContext);
 
 export const AllMapDataContext = createContext();
 
@@ -49,16 +55,14 @@ export const AllMapDataProvider = ({ children }) => {
         if (activeCountry?.code) {
             resourceDefinitions.forEach( ([setResource, fetcher]) => 
                 setResource(
-                    createResource(() => fetcher(activeCountry.code))
+                    createResource(() => fetcher(activeCountry?.code))
                 )
             );
         }
     }, [activeCountry]);
 
     // expose state variables to the activeCountry hook
-    const activeCountryValue ={
-        activeCountry,
-        setActiveCountry,
+    const activeCountryData ={
         indicatorResource,
         fooResource, 
         gsapGeometryResource
@@ -68,8 +72,10 @@ export const AllMapDataProvider = ({ children }) => {
         <AllMapDataContext.Provider value={null}>
             <MapDataContext.Provider value={{ mapData, setMapData }}>
             <LocationDataContext.Provider value={{ locationData, setLocationData }}>
-            <ActiveCountryContext.Provider value={activeCountryValue}>
+            <ActiveCountryContext.Provider value={{ activeCountry, setActiveCountry }}>
+            <ActiveCountryDataContext.Provider value={activeCountryData}>
                     {children}
+            </ActiveCountryDataContext.Provider>
             </ActiveCountryContext.Provider>
             </LocationDataContext.Provider>
             </MapDataContext.Provider>

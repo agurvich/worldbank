@@ -1,16 +1,24 @@
-import { useActiveCountry } from '@src/contexts/map-data-context';
+import { useActiveCountryData } from '@src/contexts/map-data-context';
 import useLifecycleLogger from '@src/hooks/lifecycle-logger';
-import { useRef } from 'react';
+import { withFallbackAndBoundary } from '@src/utils/suspense-error-hoc';
 import { GeoJSON } from 'react-leaflet';
 
-function SubNationalSelector({ className='', ...props}) {
+function SubNationalSelector({className='', ...props}) {
 
-    const { activeCountry, setActiveCountry, gsapGeometryResource } = useActiveCountry();
+    // React Suspense will handle switching between skeleton and loaded grid
+    const EnhancedContent = withFallbackAndBoundary({
+        Component:SubNationalSelectorContent
+    });
+
+    useLifecycleLogger('SubNationalSelector');
+    return <EnhancedContent {...{className, ...props}}/>
+}
+
+function SubNationalSelectorContent({ className='', ...props}) {
+
+    const { gsapGeometryResource } = useActiveCountryData();
 
     const gsapGeometry = gsapGeometryResource?.read();
-
-    const activeCountryRef = useRef();
-    activeCountryRef.__current__ = activeCountry.name;
 
     // Define style for GeoJSON features
     const geoJSONStyle = (feature) => ({
@@ -55,8 +63,8 @@ function SubNationalSelector({ className='', ...props}) {
                 mouseout: (e) => {
                     const layer = e.target;
                     layer.setStyle({
-                        color: feature.properties.shapeGroup === activeCountryRef.__current__ ? 'green' : 'blue',
-                        weight: feature.properties.shapeGroup === activeCountryRef.__current__ ? 2 : 1,
+                        color: 'blue',
+                        weight: 1,
                     });
                 },
             });
@@ -65,6 +73,7 @@ function SubNationalSelector({ className='', ...props}) {
 
     console.log(gsapGeometry)
     useLifecycleLogger('SubNationalSelector');
+    if (!gsapGeometry) return null;
     return (
         <GeoJSON 
             key='SubNationalSelector' className={`${className}`} {...props}

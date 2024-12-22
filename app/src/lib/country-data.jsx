@@ -10,8 +10,8 @@ export async function fetchFooData(countryCode) {
 }
 
 // Fetch barData for the active country
-export async function fetchBarData(countryCode) {
-    const response = await fetch(makeURL('data/bar', `${countryCode}_bar.json`));
+export async function fetchGSAPGeometryData(countryCode) {
+    const response = await fetch(makeURL('data','sub-national-geometry',`${countryCode}_gsap_geometry.geojson`));
     if (!response.ok) {
         throw new Error(`Failed to fetch barData for ${countryCode}`);
     }

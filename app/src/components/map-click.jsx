@@ -11,6 +11,7 @@ import useLifecycleLogger from '@src/hooks/lifecycle-logger';
 import { useLocationData } from '@src/contexts/map-data-context';
 import MapEvents from './map-components/map-events';
 import NationalSelector from './map-components/national-selector';
+import SubNationalSelector from './map-components/sub-national-selector';
 
 function MapClick({className='', ...props}) {
 
@@ -24,8 +25,6 @@ function MapClick({className='', ...props}) {
 }
 
 function MapClickContent({ className, ...params }) {
-    const { locationData, setLocationData } = useLocationData();
-    
     // setup watcher for map dimension changes
     const wrapperRef = useRef();
     const dimensions = useDimensions(wrapperRef);
@@ -36,7 +35,7 @@ function MapClickContent({ className, ...params }) {
     //const baseURL = `${import.meta.env.VITE_LFS_ENDPT}tiles/${tileVariable}/{z}/{x}/{y}.png`;
     const baseURL = `https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`;
     
-    useLifecycleLogger("MapClick");
+    useLifecycleLogger("MapClick",1);
     return (
             <div className='w-full h-full z-10'> 
                 <div
@@ -46,7 +45,7 @@ function MapClickContent({ className, ...params }) {
                 >
                     <div style={{ height: '100%', width: '100%' }}>
                         <MapContainer
-                            center={ locationData }
+                            center={ [0, 0] }
                             maxZoom={12}
                             minZoom={2}
                             zoom={2}
@@ -70,9 +69,10 @@ function MapClickContent({ className, ...params }) {
                             {/* customize the attribution control */}
                             <AttributionControl prefix='Leaflet' position='bottomright'/>
                             {/* handle any map events like dimensions changing or clicks */}
-                            <MapEvents {...{dimensions, previousDimensions, setLocationData}} />
+                            {/* <MapEvents {...{dimensions, previousDimensions, setLocationData}} /> */}
                             {/* add vector polygons for clicking on countries */}
                             <NationalSelector />
+                            <SubNationalSelector />
                             
                         </MapContainer>
                     </div>

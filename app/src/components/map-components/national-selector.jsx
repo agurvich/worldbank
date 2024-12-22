@@ -67,7 +67,7 @@ function NationalSelector({ className='', ...props}) {
     useLifecycleLogger('NationalSelector');
     return (
         <GeoJSON 
-            key='NationalSelector' className={`w-max ${className}`} {...props}
+            key='NationalSelector' className={`${className}`} {...props}
             data={countriesGeoJSON} 
             style={geoJSONStyle} 
             onEachFeature={onEachFeature} 

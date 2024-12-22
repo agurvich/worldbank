@@ -26,10 +26,6 @@ function Content({ className, ...props }) {
 
     const {setChartData} = useChartData();
 
-    console.log()
-    console.log()
-
-
     const multiDimPovertyData = multiDimPoverty[activeCountry.name];
     const foodSecurityData = foodSecurity.fs_data[activeCountry.name];
     useEffect(()=>{
@@ -103,7 +99,7 @@ function Content({ className, ...props }) {
             </div>
             <div className='flex flex-col items-center'>
                 <h2 className='font-semi-bold text-2xl'>Food Insecurity</h2>
-                <div className='h-48 w-96'> <Chart /> </div>
+                {/*<div className='h-48 w-96'> <Chart /> </div>*/}
             </div>
         </div>
     )
