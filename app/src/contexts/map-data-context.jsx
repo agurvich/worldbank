@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import createResource from '@src/resources/resource';
-import { fetchIndicatorData } from '@src/lib/country-data';
+import { fetchFooData, fetchGSAPGeometryData, fetchIndicatorData } from '@src/lib/country-data';
 
 export const MapDataContext = createContext({
     mapData: null,
@@ -35,23 +35,34 @@ export const AllMapDataProvider = ({ children }) => {
     });
     const [locationData, setLocationData] = useState({ lat: position[0], lng: position[1] });
     const [indicatorResource, setIndicatorResource] = useState(null);
+    const [fooResource, setFooResource] = useState(null);
+    const [gsapGeometryResource, setGSAPGeometryResource] = useState(null);
+
+    const resourceDefinitions = [
+        [setIndicatorResource, fetchIndicatorData],
+        [setFooResource, fetchFooData],
+        [setGSAPGeometryResource, fetchGSAPGeometryData],
+    ];
 
     // Dynamically update indicator resource when activeCountry changes
     useEffect(() => {
         if (activeCountry?.code) {
-            const newResource = createResource(() => fetchIndicatorData(activeCountry.code));
-            setIndicatorResource(newResource);
+            resourceDefinitions.forEach( ([setResource, fetcher]) => 
+                setResource(
+                    createResource(() => fetcher(activeCountry.code))
+                )
+            );
         }
     }, [activeCountry]);
 
-    const activeCountryValue = useMemo(
-        () => ({
-            activeCountry,
-            setActiveCountry,
-            indicatorResource,
-        }),
-        [activeCountry, indicatorResource]
-    );
+    // expose state variables to the activeCountry hook
+    const activeCountryValue ={
+        activeCountry,
+        setActiveCountry,
+        indicatorResource,
+        fooResource, 
+        gsapGeometryResource
+    };
 
     return (
         <AllMapDataContext.Provider value={null}>
