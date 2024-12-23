@@ -3,7 +3,7 @@ import MoonGrid from './moon-grid';
 import Header from './header';
 import MapClick from './map-click';
 import Chart from './chart';
-import SuspenseComponent from './suspense-component';
+import InfoPane from './suspense-component';
 
 function SPA({className='', ...props}) {
 
@@ -15,7 +15,7 @@ function SPA({className='', ...props}) {
                     <MapClick />
                 </div>
                 <div className='h-screen w-1/2 overflow-y-scroll'>
-                    <SuspenseComponent />
+                    <InfoPane />
                 </div>
                 {/*
                 <Header />

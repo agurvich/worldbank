@@ -1,31 +1,26 @@
-import listenersResource from '@src/resources/listener-resource';
 import useLifecycleLogger from '@src/hooks/lifecycle-logger';
 import { withFallbackAndBoundary } from '@src/utils/suspense-error-hoc';
 import { useActiveCountry, useLocationData } from '@src/contexts/map-data-context';
-import Chart from './chart';
-import countryDataResource from '@src/resources/country-data-resource';
 import { useChartData } from '@src/contexts/chart-data-context';
-import { useEffect } from 'react';
 
-function SuspenseComponent({className='', ...props}) {
+function InfoPane({className='', ...props}) {
 
     // React Suspense will handle switching between skeleton and loaded grid
     const EnhancedContent = withFallbackAndBoundary({
         Component:Content
     });
 
-    useLifecycleLogger('SuspenseComponent');
+    useLifecycleLogger('InfoPane');
     return <EnhancedContent {...{className, ...props}}/>
 }
 
 
 function Content({ className, ...props }) {
-    //const {servers, ...rest} = listenersResource.read(); // React Suspense handles loading
-    const [ multiDimPoverty, foodSecurity ] = countryDataResource.read(); 
     const { activeCountry } = useActiveCountry();
 
     const {setChartData} = useChartData();
 
+    /*
     const multiDimPovertyData = multiDimPoverty[activeCountry.name];
     const foodSecurityData = foodSecurity.fs_data[activeCountry.name];
     useEffect(()=>{
@@ -45,6 +40,7 @@ function Content({ className, ...props }) {
             setChartData([chartData]);
         }
     },[activeCountry]);
+    */
 
 
     const detailsClassName="w-full p-4 group border border-gray-300 rounded-lg bg-white shadow-md";
@@ -75,7 +71,7 @@ function Content({ className, ...props }) {
                 </details>
                 */
 
-    if (!activeCountry?.name) return null
+    if (true) return null
     return (
         <div className={`p-4 flex flex-col w-full gap-8 ${className}`} {...props}>
             <div className='flex flex-row w-full justify-around'>
@@ -105,4 +101,4 @@ function Content({ className, ...props }) {
     )
 }
 
-export default SuspenseComponent;
+export default InfoPane;
