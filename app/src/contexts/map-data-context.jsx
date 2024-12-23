@@ -29,9 +29,9 @@ export const useLocationData = () => useContext(LocationDataContext);
 export const useActiveCountry = () => useContext(ActiveCountryContext);
 export const useActiveCountryData = () => useContext(ActiveCountryDataContext);
 
-export const AllNationalDataContext = createContext();
+export const AllMapDataContext = createContext();
 
-export const AllNationalDataProvider = ({ children }) => {
+export const AllMapDataProvider = ({ children }) => {
     const position = [0, 0];
 
     const [locationData, setLocationData] = useState({ lat: position[0], lng: position[1] });
@@ -41,11 +41,11 @@ export const AllNationalDataProvider = ({ children }) => {
     // create resources once at start-up
     useEffect(()=>{
         setNationalDataResources({
-            'foodSecurityResource' : createResource(() => fetchFoodSecurityData),
-            'multiDimPovertyResource' : createResource(() => fetchMultiDimPovertyData),
+            'foodSecurityResource' : createResource(fetchFoodSecurityData),
+            'multiDimPovertyResource' : createResource(fetchMultiDimPovertyData),
             // actually sub-national but is first indexed by country code
-            'gsapResource' : createResource(() => fetchGSAPData),
-            'spidMDPResource' : createResource(() => fetchSPIDMDPData),
+            'gsapResource' : createResource(fetchGSAPData),
+            'spidMDPResource' : createResource(fetchSPIDMDPData),
         });
     },[]);
 
@@ -76,7 +76,7 @@ export const AllNationalDataProvider = ({ children }) => {
                 )
             );
         }
-        else resourceDefinitions.forEach( ([setResource ]) => setResource(null));
+        else resourceDefinitions.forEach( ([setResource]) => setResource(null));
     }, [activeCountry]);
 
     // expose state variables to the activeCountry hook
