@@ -71,7 +71,6 @@ function SubNationalSelectorContent({ className='', ...props}) {
         }
     };
 
-    console.log(gsapGeometry)
     useLifecycleLogger('SubNationalSelector');
     if (!gsapGeometry) return null;
     return (

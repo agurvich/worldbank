@@ -1,13 +1,8 @@
-import { useMapEvent } from 'react-leaflet';
+import { useMap } from 'react-leaflet';
 
-function MapEvents({ dimensions, previousDimensions, setLocationData }) {
+function MapEvents({ dimensions, previousDimensions }) {
 
-    const map = useMapEvent('click', (e) => {
-        const { lat, lng } = e.latlng;
-        // update the currently focused locationData
-        setLocationData({ lat: lat, lng: lng });
-        map.flyTo([lat, lng], map.getZoom() + 2, { duration: 1.5 }); // Fly to clicked location with animation
-    });
+    const map = useMap();
 
     if (dimensions.width !== previousDimensions.current.width ||
         dimensions.height !== previousDimensions.current.height) {

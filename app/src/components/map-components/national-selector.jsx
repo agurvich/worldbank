@@ -28,21 +28,27 @@ function NationalSelector({ className='', ...props}) {
     
             layer.on({
                 click: (e) => {
-                    setActiveCountry({
-                        name:feature.properties.shapeGroup,
-                        code:feature.properties.shapeGroup
-                    });
-                    // Propagate the click event to the map
                     const map = e.target._map;
-                    const latlng = e.latlng;
-                    const bounds = layer.getBounds();
+
+                    // clear the active country to hide
+                    //  the current sub-national-boundaries
+                    setActiveCountry({});
+
                     // Fit the map view to the bounds of the polygon
+                    const bounds = layer.getBounds();
                     map.flyToBounds(bounds, {
                         padding: [20, 20], // Add padding around the polygon
                         maxZoom: 8,      // Limit the maximum zoom level
                         duration: 1.5     // Duration in seconds for the animation
                     });
 
+                    // set the active country *after* the animation finishes
+                    setTimeout(()=>
+                        setActiveCountry({
+                            name:feature.properties.shapeGroup,
+                            code:feature.properties.shapeGroup
+                        }), 1500
+                    ); 
                 },
                 mouseover: (e) => {
                     const layer = e.target;

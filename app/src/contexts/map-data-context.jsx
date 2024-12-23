@@ -59,6 +59,7 @@ export const AllMapDataProvider = ({ children }) => {
                 )
             );
         }
+        else resourceDefinitions.forEach( ([setResource ]) => setResource(null));
     }, [activeCountry]);
 
     // expose state variables to the activeCountry hook

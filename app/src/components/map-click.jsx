@@ -69,7 +69,7 @@ function MapClickContent({ className, ...params }) {
                             {/* customize the attribution control */}
                             <AttributionControl prefix='Leaflet' position='bottomright'/>
                             {/* handle any map events like dimensions changing or clicks */}
-                            {/* <MapEvents {...{dimensions, previousDimensions, setLocationData}} /> */}
+                            <MapEvents {...{dimensions, previousDimensions }} />
                             {/* add vector polygons for clicking on countries */}
                             <NationalSelector />
                             <SubNationalSelector />
