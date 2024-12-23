@@ -1,10 +1,11 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import createResource from '@src/resources/resource';
-import { fetchFooData, fetchGSAPGeometryData, fetchIndicatorData } from '@src/lib/country-data';
+import { fetchGSAPGeometryData, fetchSPIDGeometryData, fetchSPIDInequalityData, fetchIndicatorData  } from '@src/lib/sub-national-data';
+import { fetchFoodSecurityData, fetchMultiDimPovertyData, fetchGSAPData, fetchSPIDMDPData} from '@src/lib/national-data';
 
-export const MapDataContext = createContext({
-    mapData: null,
-    setMapData: () => {}
+export const NationalDataContext = createContext({
+    nationalDataResources: null,
+    setNationalDataResources: () => {}
 });
 
 export const LocationDataContext = createContext({
@@ -23,31 +24,47 @@ export const ActiveCountryDataContext = createContext({
     fooResource : null
 });
 
-export const useMapData = () => useContext(MapDataContext);
+export const useNationalData = () => useContext(NationalDataContext);
 export const useLocationData = () => useContext(LocationDataContext);
 export const useActiveCountry = () => useContext(ActiveCountryContext);
 export const useActiveCountryData = () => useContext(ActiveCountryDataContext);
 
-export const AllMapDataContext = createContext();
+export const AllNationalDataContext = createContext();
 
-export const AllMapDataProvider = ({ children }) => {
+export const AllNationalDataProvider = ({ children }) => {
     const position = [0, 0];
 
-    const [mapData, setMapData] = useState(null);
+    const [locationData, setLocationData] = useState({ lat: position[0], lng: position[1] });
+    /* national data resources, loaded dynamically*/ 
+    const [nationalDataResources, setNationalDataResources] = useState(null);
+
+    // create resources once at start-up
+    useEffect(()=>{
+        setNationalDataResources({
+            'foodSecurityResource' : createResource(() => fetchFoodSecurityData),
+            'multiDimPovertyResource' : createResource(() => fetchMultiDimPovertyData),
+            // actually sub-national but is first indexed by country code
+            'gsapResource' : createResource(() => fetchGSAPData),
+            'spidMDPResource' : createResource(() => fetchSPIDMDPData),
+        });
+    },[]);
+
+    /* sub-national data resources, loaded dynamically*/ 
     const [activeCountry, setActiveCountry] = useState({
         name: null,
         code: null,
         geometry: null
     });
-    const [locationData, setLocationData] = useState({ lat: position[0], lng: position[1] });
     const [indicatorResource, setIndicatorResource] = useState(null);
-    const [fooResource, setFooResource] = useState(null);
     const [gsapGeometryResource, setGSAPGeometryResource] = useState(null);
+    const [spidGeometryResource, setSPIDGeometryResource] = useState(null);
+    const [spidInequalityDataResource, setSPIDInequalityDataResource] = useState(null);
 
     const resourceDefinitions = [
         [setIndicatorResource, fetchIndicatorData],
-        [setFooResource, fetchFooData],
         [setGSAPGeometryResource, fetchGSAPGeometryData],
+        [setSPIDGeometryResource, fetchSPIDGeometryData],
+        [setSPIDInequalityDataResource, fetchSPIDInequalityData],
     ];
 
     // Dynamically update indicator resource when activeCountry changes
@@ -65,13 +82,14 @@ export const AllMapDataProvider = ({ children }) => {
     // expose state variables to the activeCountry hook
     const activeCountryData ={
         indicatorResource,
-        fooResource, 
-        gsapGeometryResource
+        gsapGeometryResource, 
+        spidGeometryResource, 
+        spidInequalityDataResource
     };
 
     return (
         <AllMapDataContext.Provider value={null}>
-            <MapDataContext.Provider value={{ mapData, setMapData }}>
+            <NationalDataContext.Provider value={{ nationalDataResources }}>
             <LocationDataContext.Provider value={{ locationData, setLocationData }}>
             <ActiveCountryContext.Provider value={{ activeCountry, setActiveCountry }}>
             <ActiveCountryDataContext.Provider value={activeCountryData}>
@@ -79,7 +97,7 @@ export const AllMapDataProvider = ({ children }) => {
             </ActiveCountryDataContext.Provider>
             </ActiveCountryContext.Provider>
             </LocationDataContext.Provider>
-            </MapDataContext.Provider>
+            </NationalDataContext.Provider>
         </AllMapDataContext.Provider>
     );
 };
