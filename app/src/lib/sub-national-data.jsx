@@ -13,7 +13,16 @@ export async function fetchFooData(countryCode) {
 export async function fetchGSAPGeometryData(countryCode) {
     const response = await fetch(makeURL('data','sub-national-geometry',`${countryCode}_gsap_geometry.geojson`));
     if (!response.ok) {
-        throw new Error(`Failed to fetch barData for ${countryCode}`);
+        throw new Error(`Failed to fetch gsapGeometryData for ${countryCode}`);
+    }
+    return response.json();
+}
+
+// Fetch barData for the active country
+export async function fetchSPIDGeometryData(countryCode) {
+    const response = await fetch(makeURL('data','sub-national-geometry',`${countryCode}_spid_geometry.geojson`));
+    if (!response.ok) {
+        throw new Error(`Failed to fetch spidGeometryData for ${countryCode}`);
     }
     return response.json();
 }
