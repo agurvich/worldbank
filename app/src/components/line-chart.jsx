@@ -1,18 +1,39 @@
+import useLifecycleLogger from '@src/hooks/lifecycle-logger';
+import Chart from './chart';
+import { useChartData } from "@src/contexts/chart-data-context";
+
+function LineChart({moon, className='', ...props}) {
+    const { chartData } = useChartData();
+
+    useLifecycleLogger('LineChart');
+    return (
+        <Chart {...{
+            chartData, 
+            dataReady: () => chartData?.lines.length,
+            drawChart: drawLines
+        }} />
+    );
+}
+
+export default LineChart;
+
+
+/* ---------- D3 renderer below  ------------- */ 
 import * as d3 from 'd3';
 import { renderToString } from 'react-dom/server';
 import { BsThermometerHalf, BsDropletHalf } from "react-icons/bs";
-import { addYAxis } from './d3-yticks';
-import { addXAxis } from './d3-xticks';
-import { addDataLines } from './d3-lines';
-import { animateTheta } from './d3-animation';
+import { addYAxis } from './chart/d3-yticks';
+import { addXAxis } from './chart/d3-xticks';
+import { addDataLines } from './chart/d3-lines';
+import { animateTheta } from './chart/d3-animation';
 
-export function drawChart({
+export function drawLines({
     svgRef,               // Reference to the SVG element
+    dimensions,
     lines,                 // chartData to be visualized, all 4 ssps
     minX,maxX,
     minY,maxY,
     // Current dimensions of the wrapper div, for responsiveness
-    dimensions,
     ...pars
 }) {
     // Select the SVG element and clear any existing content

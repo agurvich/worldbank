@@ -3,41 +3,35 @@ import { useEffect, useRef, useState } from "react";
 import useDimensions from "@src/hooks/dimensions";
 import { withFallbackAndBoundary } from "@src/utils/suspense-error-hoc";
 import { createChartResource } from "@src/resources/resource";
-import { drawChart } from "./chart-utils";
-import { useChartData } from "@src/contexts/chart-data-context";
 import useLifecycleLogger from "@src/hooks/lifecycle-logger";
 
-function Chart({ className = "", ...props }) {
+function Chart({ chartData, dataReady, drawChart, className = "", ...props }) {
     const EnhancedChart = withFallbackAndBoundary({
-        Component: ChartContent,
+        Component: () => ChartContent({ chartData, dataReady, drawChart }),
     });
 
     useLifecycleLogger("Chart");
     return <EnhancedChart {...{ className, ...props }} />;
 }
 
-function ChartContent() {
-    const { chartData } = useChartData();
+function ChartContent({chartData, dataReady, drawChart}) {
     const wrapperRef = useRef();
     const svgRef = useRef();
     const dimensions = useDimensions(wrapperRef);
-    // Resource to track the drawing process
     const [chartResource, setChartResource] = useState(null);
 
-    useEffect(
-        ()=>{ 
-            if (svgRef.current){
-                console.log("removing all chart content")
-                const svg = d3.select(svgRef.current);
-                svg.selectAll("*").remove();
-            }
-        },
-    [ dimensions ]);
-
-    // actually draw the chart 
+    // Clear previous chart on dimension changes
     useEffect(() => {
-        if (chartData?.lines.length) {
-            // Create the resource when chartData changes
+        if (svgRef.current) {
+            console.log("removing all chart content");
+            const svg = d3.select(svgRef.current);
+            svg.selectAll("*").remove();
+        }
+    }, [dimensions]);
+
+    // Update the chart resource when data changes
+    useEffect(() => {
+        if (dataReady(chartData)) {
             setChartResource(
                 createChartResource((done) => {
                     drawChart({
@@ -51,12 +45,13 @@ function ChartContent() {
         }
     }, [chartData, dimensions]);
 
-    chartResource?.read()
+    // Ensure resource is read and suspense works
+    if (chartResource) chartResource.read();
 
     useLifecycleLogger("ChartContent", 0);
     return (
         <div ref={wrapperRef} className="h-full w-full border-contrast border">
-            {chartResource && <svg ref={svgRef} {...{ width: dimensions.width, height: dimensions.height }} />}
+            <svg ref={svgRef} {...{ width: dimensions.width, height: dimensions.height }} />
         </div>
     );
 }

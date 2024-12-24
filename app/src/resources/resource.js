@@ -43,8 +43,7 @@ export default function createResource(fetcher) {
 export function createChartResource(drawFn) {
     return createResource(() => {
         return new Promise((resolve) => {
-            console.log('drawing')
-            drawFn(() => resolve()); // Invoke drawFn, and call resolve when done
+            return drawFn(resolve);
         });
     });
 }
