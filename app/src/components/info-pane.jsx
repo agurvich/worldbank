@@ -8,10 +8,12 @@ import { useActiveCountry } from '@src/contexts/map-data-context';
 function InfoPane({ className = '', ...props }) {
     const EnhancedContent = withFallbackAndBoundary({
         Component: Content,
+        className,
+        ...props
     });
 
     useLifecycleLogger('InfoPane');
-    return <EnhancedContent {...{ className, ...props }} />;
+    return <EnhancedContent />;
 }
 
 function Content({ className = '', ...props }) {

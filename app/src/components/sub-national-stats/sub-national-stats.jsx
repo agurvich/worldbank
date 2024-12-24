@@ -47,13 +47,15 @@ export default SubNationalStats;
 function SPIDStats({ className = '', ...props }) {
     const EnhancedContent = withFallbackAndBoundary({
         Component: SPIDStatsContent,
+        className,
+        ...props
     });
 
     useLifecycleLogger('SPIDStats');
-    return <EnhancedContent {...{ className, ...props }} />;
+    return <EnhancedContent  />;
 }
 
-function SPIDStatsContent({getData}){
+function SPIDStatsContent({getData, className, ...props}){
     const { spidInequalityDataResource } = useActiveCountryData();
     if (!spidInequalityDataResource) return null
     return (

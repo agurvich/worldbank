@@ -7,11 +7,13 @@ function SubNationalSelector({className='', ...props}) {
 
     // React Suspense will handle switching between skeleton and loaded grid
     const EnhancedContent = withFallbackAndBoundary({
-        Component:SubNationalSelectorContent
+        Component:SubNationalSelectorContent,
+        className,
+        ...props
     });
 
     useLifecycleLogger('SubNationalSelector');
-    return <EnhancedContent {...{className, ...props}}/>
+    return <EnhancedContent />
 }
 
 function SubNationalSelectorContent({ className='', ...props}) {

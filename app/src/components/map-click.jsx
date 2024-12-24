@@ -17,11 +17,13 @@ function MapClick({className='', ...props}) {
 
     // React Suspense will handle switching between skeleton and loaded grid
     const EnhancedContent = withFallbackAndBoundary({
-        Component:MapClickContent
+        Component:MapClickContent,
+        className,
+        ...props
     });
 
     useLifecycleLogger('MapClick');
-    return <EnhancedContent {...{className, ...props}}/>
+    return <EnhancedContent />
 }
 
 function MapClickContent({ className, ...params }) {
