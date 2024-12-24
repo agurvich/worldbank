@@ -1,6 +1,9 @@
 import useLifecycleLogger from '@src/hooks/lifecycle-logger';
 import { withFallbackAndBoundary } from '@src/utils/suspense-error-hoc';
 import { useState } from 'react';
+import NationalStats from './national-stats/national-stats';
+import SubNationalStats from './sub-national-stats/sub-national-stats';
+import { useActiveCountry } from '@src/contexts/map-data-context';
 
 function InfoPane({ className = '', ...props }) {
     const EnhancedContent = withFallbackAndBoundary({
@@ -16,6 +19,8 @@ function Content({ className = '', ...props }) {
     const [visibleTab, setVisibleTab] = useState(0); // Tracks the active tab
     const [isAnimating, setIsAnimating] = useState(false); // Locks animation transitions
     const animationDuration = 1250; // Animation duration in ms
+
+    const { activeCountry } = useActiveCountry();
 
     const handleTabChange = (tabIndex) => {
         if (tabIndex !== currentTab && !isAnimating) {
@@ -33,7 +38,8 @@ function Content({ className = '', ...props }) {
         <div className={`p-4 flex flex-col w-full gap-8 ${className}`} {...props}>
             <div className="flex flex-col h-full w-full">
                 {/* Tabs */}
-                <div className="flex justify-center space-x-4 border-b p-2">
+                <div className="flex flex-row items-center justify-center space-x-4 border-b p-2">
+                    <h1 className='text-2xl font-bold'> {activeCountry?.name} </h1>
                     <button
                         className={`px-4 py-2 rounded ${
                             currentTab === 0 ? 'bg-blue-500 text-white' : 'bg-gray-200'
@@ -74,8 +80,7 @@ function Content({ className = '', ...props }) {
                 opacity: visibleTab === 0 ? 1 : 0,
             }}
         >
-            <h2 className="text-lg font-bold">Country Rankings</h2>
-            <p>Rankings content goes here... and here and here and here</p>
+            <NationalStats />
         </div>
 
         {/* Back Face (Details) */}
@@ -86,8 +91,7 @@ function Content({ className = '', ...props }) {
                 opacity: visibleTab === 0 ? 0 : 1,
             }}
         >
-            <h2 className="text-lg font-bold">Country Details</h2>
-            <p>Details content goes here... and here and here and here</p>
+            <SubNationalStats />
         </div>
     </div>
 </div>
