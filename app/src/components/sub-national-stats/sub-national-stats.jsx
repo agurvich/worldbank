@@ -57,7 +57,9 @@ function SPIDStats({ className = '', ...props }) {
 
 function SPIDStatsContent({getData, className, ...props}){
     const { spidInequalityDataResource } = useActiveCountryData();
+    console.log(spidInequalityDataResource)
     if (!spidInequalityDataResource) return null
+    console.log(spidInequalityDataResource)
     return (
         <LinkedDotPlotGrid data={getData(spidInequalityDataResource?.read())}/>
     );

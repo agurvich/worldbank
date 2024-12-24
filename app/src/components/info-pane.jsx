@@ -17,8 +17,8 @@ function InfoPane({ className = '', ...props }) {
 }
 
 function Content({ className = '', ...props }) {
-    const [currentTab, setCurrentTab] = useState(0); // Tracks the active tab
-    const [visibleTab, setVisibleTab] = useState(0); // Tracks the active tab
+    const [currentTab, setCurrentTab] = useState(1); // Tracks the active tab
+    const [visibleTab, setVisibleTab] = useState(1); // Tracks the active tab
     const [isAnimating, setIsAnimating] = useState(false); // Locks animation transitions
     const animationDuration = 1250; // Animation duration in ms
 
