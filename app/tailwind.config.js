@@ -78,6 +78,10 @@ module.exports = {
               weak: 'var(--stroke-success-weak)'
           }
       },
+      transform: {
+        'rotate-y-0': 'rotateY(0deg)',
+        'rotate-y-180': 'rotateY(180deg)',
+      },
       background: {
           neutral: 'var(--background-neutral)',
           contrast: 'var(--background-contrast)',

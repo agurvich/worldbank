@@ -15,13 +15,13 @@ function Content({ className = '', ...props }) {
     const [currentTab, setCurrentTab] = useState(0); // Tracks the active tab
     const [visibleTab, setVisibleTab] = useState(0); // Tracks the active tab
     const [isAnimating, setIsAnimating] = useState(false); // Locks animation transitions
-    const animationDuration = 1500; // Animation duration in ms
+    const animationDuration = 1250; // Animation duration in ms
 
     const handleTabChange = (tabIndex) => {
         if (tabIndex !== currentTab && !isAnimating) {
             setIsAnimating(true); // Lock transitions
-            setCurrentTab(tabIndex); // Update tab after the animation completes
-            setTimeout(() => setVisibleTab(tabIndex), animationDuration/2)
+            setCurrentTab(tabIndex); // trigger the rotation
+            setTimeout(() => setVisibleTab(tabIndex), animationDuration/3) // trigger the content change
         }
     };
 
@@ -61,6 +61,7 @@ function Content({ className = '', ...props }) {
         transform: currentTab === 0 ? 'rotateY(0deg)' : 'rotateY(180deg)',
         transformStyle: 'preserve-3d', // Ensures children participate in the 3D space
         transitionDuration:`${animationDuration}ms`,
+
     }}
     onTransitionEnd={handleTransitionEnd} // Ensure `isAnimating` resets after the transition
 >
@@ -71,7 +72,6 @@ function Content({ className = '', ...props }) {
             style={{ 
                 transform: 'rotateY(0deg)',
                 opacity: visibleTab === 0 ? 1 : 0,
-                transitionDuration: `${animationDuration/2}ms`
             }}
         >
             <h2 className="text-lg font-bold">Country Rankings</h2>
@@ -80,11 +80,10 @@ function Content({ className = '', ...props }) {
 
         {/* Back Face (Details) */}
         <div
-            className="absolute w-full h-full shadow-lg border border-black transition-all"
+            className="absolute w-full h-full shadow-lg border border-black"
             style={{
                 transform: 'rotateY(180deg)',
                 opacity: visibleTab === 0 ? 0 : 1,
-                transitionDuration: `${animationDuration/2}ms`
             }}
         >
             <h2 className="text-lg font-bold">Country Details</h2>
