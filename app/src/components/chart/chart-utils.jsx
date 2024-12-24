@@ -8,11 +8,12 @@ import { animateTheta } from './d3-animation';
 
 export function drawChart({
     svgRef,               // Reference to the SVG element
-    chartData,                 // chartData to be visualized, all 4 ssps
+    lines,                 // chartData to be visualized, all 4 ssps
     minX,maxX,
     minY,maxY,
     // Current dimensions of the wrapper div, for responsiveness
     dimensions,
+    ...pars
 }) {
     // Select the SVG element and clear any existing content
     const svg = d3.select(svgRef.current);
@@ -52,9 +53,10 @@ export function drawChart({
     // Add X-axis ticks to the chart
     addXAxis(mainGroup, xScale, canvasHeight, minX, maxX);
 
+    console.log(lines)
     const otherLines = [];
     // Add chartData lines to the chart for each chartData set except the active scenario
-    chartData.forEach((thisLineData) => {
+    lines.forEach((thisLineData) => {
         otherLines.push(addDataLines(
             mainGroup,
             thisLineData,

@@ -1,5 +1,10 @@
-[
-    {
+{
+    "minX" : 0,
+    "maxX" : 1,
+    "minY" : 0, 
+    "maxY" : 1,
+    "name" : "food security",
+    "lines": [{
         "values": [
             {
                 "x": 0,
@@ -1408,3 +1413,4 @@
         "name": "default2"
     }
 ]
+}

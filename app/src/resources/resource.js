@@ -1,3 +1,7 @@
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export default function createResource(fetcher) {
     let status = "pending"; // "pending", "success", or "error"
     let result = null;
@@ -34,4 +38,13 @@ export default function createResource(fetcher) {
             load(); // Trigger a new fetch
         },
     };
+}
+
+export function createChartResource(drawFn) {
+    return createResource(() => {
+        return new Promise((resolve) => {
+            console.log('drawing')
+            drawFn(() => resolve()); // Invoke drawFn, and call resolve when done
+        });
+    });
 }

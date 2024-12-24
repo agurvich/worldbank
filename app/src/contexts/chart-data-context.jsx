@@ -21,18 +21,9 @@ export const AllChartDataProvider = ({ children }) => {
 
     },[]);
 
-    const minX = 2015;
-    const maxX = 2024;
-    const minY = 0;
-    const maxY = 50;
-
     return (
         <AllChartDataContext.Provider value={null}>
-            <ChartDataContext.Provider value={{
-                chartData, setChartData,
-                minX, maxX,
-                minY, maxY
-            }}>
+            <ChartDataContext.Provider value={{ chartData, setChartData, }}>
                 {children}
             </ChartDataContext.Provider>
         </AllChartDataContext.Provider>

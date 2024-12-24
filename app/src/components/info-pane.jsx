@@ -2,6 +2,7 @@ import useLifecycleLogger from '@src/hooks/lifecycle-logger';
 import { withFallbackAndBoundary } from '@src/utils/suspense-error-hoc';
 import { useActiveCountry, useLocationData } from '@src/contexts/map-data-context';
 import { useChartData } from '@src/contexts/chart-data-context';
+import Chart from './chart';
 
 function InfoPane({className='', ...props}) {
 
@@ -19,7 +20,9 @@ function Content({ className, ...props }) {
 
     return (
         <div className={`p-4 flex flex-col w-full gap-8 ${className}`} {...props}>
-            content
+            <div className='w-96 h-96'>
+                <Chart /> 
+            </div>
         </div>
     )
 }
