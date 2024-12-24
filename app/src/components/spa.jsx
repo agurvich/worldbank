@@ -1,9 +1,7 @@
 import useLifecycleLogger from '@src/hooks/lifecycle-logger';
-import MoonGrid from './moon-grid';
-import Header from './header';
 import MapClick from './map-click';
 import Chart from './chart';
-import InfoPane from './suspense-component';
+import InfoPane from './info-pane';
 
 function SPA({className='', ...props}) {
 

@@ -16,9 +16,10 @@ function SubNationalSelector({className='', ...props}) {
 
 function SubNationalSelectorContent({ className='', ...props}) {
 
-    const { gsapGeometryResource } = useActiveCountryData();
+    const { gsapGeometryResource, spidGeometryResource } = useActiveCountryData();
 
     const gsapGeometry = gsapGeometryResource?.read();
+    const spidGeometry = spidGeometryResource?.read();
 
     // Define style for GeoJSON features
     const geoJSONStyle = (feature) => ({

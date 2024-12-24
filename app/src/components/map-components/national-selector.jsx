@@ -24,7 +24,7 @@ function NationalSelector({ className='', ...props}) {
     // Function to bind popups or events to each GeoJSON feature
     const onEachFeature = (feature, layer) => {
         if (feature.properties && feature.properties.shapeGroup) {
-            layer.bindPopup(`<b>${feature.properties.shapeGroup}</b>`);
+            //layer.bindPopup(`<b>${feature.properties.shapeGroup}</b>`);
     
             layer.on({
                 click: (e) => {
