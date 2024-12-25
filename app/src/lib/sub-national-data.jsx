@@ -28,10 +28,13 @@ export async function fetchIndicatorData(countryCode) {
 }
 
 // Fetch fooData for the active country
+// Fetch and load the DuckDB database for the active country
 export async function fetchSPIDInequalityData(countryCode) {
-    const response = await fetch(makeURL('data', 'spid-inequality', `${countryCode}_spid_inequality.json`));
-    if (!response.ok) {
-        throw new Error(`Failed to fetch spidInequalityData for ${countryCode}`);
-    }
-    return response.json();
+    //const { dbResource, updateFilePath } = useDuckDBWithResource();
+
+    // Update the file path to load the corresponding Parquet file
+    updateFilePath(makeURL('data', 'spid-inequality', `${countryCode}_spid_inequality.parquet`));
+
+    // Wait for the database resource to load
+    return dbResource.read(); // Suspense-compatible; throws if not yet ready
 }

@@ -1,23 +1,36 @@
-import { createContext, useContext, useState } from 'react';
+import { duckDBManager } from '@src/hooks/duck-db';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-export const DataContext = createContext({
-    data: false,
-    setData: () => {}
+export const DuckDBContext = createContext({
+    manager: null,
+    setManager: () => {}
 });
 
-export const useData = () => useContext(DataContext);
+export const useDuckDB = () => {
+    const context = useContext(DuckDBContext);
+    if (!context) {
+        throw new Error('useDuckDB must be used within a DuckDBProvider');
+    }
+    return context;
+};
 
-export const AllDataContext = createContext();
+export const DuckDBProvider = ({ children }) => {
 
-export const AllDataProvider = ({ children }) => {
+    const [manager, setManager] = useState(null);
 
-    const [data, setData] = useState(null);
+    useEffect(() => {
+        const initializeManager = async () => {
+            const instance = duckDBManager;
+            await instance.initialize(); // Ensure DuckDB is initialized
+            setManager(instance);
+        };
+
+        initializeManager();
+    }, []); // Empty dependency array ensures this runs once
 
     return (
-        <AllDataContext.Provider value={null}>
-            <DataContext.Provider value={{ data, setData}}>
-                {children}
-            </DataContext.Provider>
-        </AllDataContext.Provider>
+        <DuckDBContext.Provider value={{ manager }}>
+            {children}
+        </DuckDBContext.Provider>
     );
 };

@@ -1,13 +1,13 @@
 import './App.css'
 import SPA from './components/spa';
 import { AllChartDataProvider } from './contexts/chart-data-context';
-import { AllDataProvider } from './contexts/data-context';
+import { DuckDBProvider } from './contexts/data-context';
 import { AllMapDataProvider } from './contexts/map-data-context';
 
 function App() {
 
     return (
-        <AllDataProvider>
+        <DuckDBProvider>
         <AllMapDataProvider>
         <AllChartDataProvider>
             <div className='w-screen'>
@@ -17,7 +17,7 @@ function App() {
             </div>
         </AllChartDataProvider>
         </AllMapDataProvider>
-        </AllDataProvider>
+        </DuckDBProvider>
     )
 }
 
