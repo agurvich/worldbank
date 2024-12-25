@@ -57,11 +57,22 @@ class DuckDBManager {
 
         // Return a bound query function
         const queryThisFile = async (sqlQuery) => {
+
+
             const newQuery = sqlQuery.replace('$fileName', `'${fileName}'`);
-            console.log("running",newQuery)
-            const result = await db.query(newQuery);
-            console.log('received',result)
-            return result.toArray(); // Convert result to a JavaScript array
+            try {
+                // Create a connection to the DuckDB instance
+                const connection = await db.connect();
+                
+                // Execute the query on the connection
+                const result = await connection.query(newQuery);
+                console.log('received', result);
+        
+                return result.toArray(); // Convert result to a JavaScript array
+            } catch (error) {
+                console.error('Query failed:', error);
+                throw error;
+            }
         };
 
         return queryThisFile; // Return the bound function

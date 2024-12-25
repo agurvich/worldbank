@@ -51,7 +51,7 @@ const getPovertyStats = queryThisFile => {
     `;
     return createResource(async () => {
         const rows = await queryThisFile(query)
-        console.log('the rows are:', rows)
+        console.log('the rows are:', rows, rows[0]?.poor215)
         return ({
             povertyRate215: rows[0]?.poor215,
             povertyRate365: rows[0]?.poor365,
