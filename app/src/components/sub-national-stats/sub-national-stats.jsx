@@ -4,6 +4,7 @@ import LinkedDotPlotGrid from './linked-dot-plot-grid';
 import { useActiveCountryData } from '@src/contexts/map-data-context';
 import { withFallbackAndBoundary } from '@src/utils/suspense-error-hoc';
 import createResource from '@src/resources/resource';
+import { useEffect, useState } from 'react';
 
 function SubNationalStats({moon, className='', ...props}) {
 
@@ -43,21 +44,19 @@ function SubNationalStats({moon, className='', ...props}) {
 
 export default SubNationalStats;
 
-const getPovertyStats = queryThisFile => {
+const getPovertyStats = async (queryThisFile, setData) => {
     const query = `
         SELECT 
             poor215, poor365, poor685
         FROM $fileName
     `;
-    return createResource(async () => {
-        const rows = await queryThisFile(query)
-        console.log('the rows are:', rows, rows[0]?.poor215)
-        return ({
-            povertyRate215: rows[0]?.poor215,
-            povertyRate365: rows[0]?.poor365,
-            povertyRate580: rows[0]?.poor685,
-        });
-    })
+    const rows = await queryThisFile(query)
+    console.log('rows are!',rows)
+    return setData({
+        povertyRate215: rows[0]?.poor215,
+        povertyRate365: rows[0]?.poor365,
+        povertyRate580: rows[0]?.poor685,
+    });
 };
 
 function SPIDStats({ className = '', ...props }) {
@@ -76,9 +75,16 @@ function SPIDStatsContent({getData, className, ...props}){
     //  the parquet file and return a function that will query the file. 
     //  getData uses that function, runs a specific query, and then binds
     //  the results to a javascript object.
+    const [ data, setData ] = useState(null);
     const { spidInequalityDataResource } = useActiveCountryData();
-    if (!spidInequalityDataResource) return null
+    useEffect(()=>{
+        if (spidInequalityDataResource){
+            getData(spidInequalityDataResource?.read(), setData)
+        }
+    },[spidInequalityDataResource]);
+
+    if (!spidInequalityDataResource || !data) return null
     return (
-        <LinkedDotPlotGrid data={getData(spidInequalityDataResource?.read())}/>
+        <LinkedDotPlotGrid data={data}/>
     );
 }

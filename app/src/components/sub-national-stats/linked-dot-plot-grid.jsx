@@ -2,11 +2,9 @@ import useLifecycleLogger from '@src/hooks/lifecycle-logger';
 import { SelectMenu } from '@src/components/select-menu';
 import { useState } from 'react';
 
-function LinkedDotPlotGrid({queryThisFn, className='', ...props}) {
+function LinkedDotPlotGrid({data, className='', ...props}) {
 
-    console.log(queryThisFn)
-    debugger
-    const datasets = Object.keys({hi:15});
+    const datasets = Object.keys(data);
     const [ dataset, setDataset ]  = useState(datasets[0]);
 
 
