@@ -55,7 +55,16 @@ class DuckDBManager {
             this.registeredFiles.set(fileName, filePath);
         }
 
-        return fileName; // Return the file name for querying
+        // Return a bound query function
+        const queryThisFile = async (sqlQuery) => {
+            const newQuery = sqlQuery.replace('$fileName', `'${fileName}'`);
+            console.log("running",newQuery)
+            const result = await db.query(newQuery);
+            console.log('received',result)
+            return result.toArray(); // Convert result to a JavaScript array
+        };
+
+        return queryThisFile; // Return the bound function
     }
 
     // Unregister a file

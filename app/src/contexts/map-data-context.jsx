@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import createResource from '@src/resources/resource';
 import { fetchGSAPGeometryData, fetchSPIDGeometryData, fetchSPIDInequalityData, fetchIndicatorData  } from '@src/lib/sub-national-data';
 import { fetchFoodSecurityData, fetchMultiDimPovertyData, fetchGSAPData, fetchSPIDMDPData} from '@src/lib/national-data';
+import { useDuckDB } from './data-context';
+import { makeURL } from '@src/utils/make-url';
 
 export const NationalDataContext = createContext({
     nationalDataResources: null,
@@ -38,6 +40,8 @@ export const AllMapDataProvider = ({ children }) => {
     /* national data resources, loaded dynamically*/ 
     const [nationalDataResources, setNationalDataResources] = useState(null);
 
+    const { manager } = useDuckDB();
+
     // create resources once at start-up
     useEffect(()=>{
         setNationalDataResources({
@@ -64,7 +68,11 @@ export const AllMapDataProvider = ({ children }) => {
         [setIndicatorResource, fetchIndicatorData],
         [setGSAPGeometryResource, fetchGSAPGeometryData],
         [setSPIDGeometryResource, fetchSPIDGeometryData],
-        [setSPIDInequalityDataResource, fetchSPIDInequalityData],
+        [setSPIDInequalityDataResource,
+            code => manager.ensureFileRegistered(
+                makeURL('data','spid-inequality',`${code}_spid_inequality.parquet`)
+            )
+        ],
     ];
 
     // Dynamically update indicator resource when activeCountry changes
